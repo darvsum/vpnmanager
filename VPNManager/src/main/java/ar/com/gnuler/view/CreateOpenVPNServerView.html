@@ -1,0 +1,56 @@
+<html>
+<head>  
+        <title>VPN Manager</title>
+</head>
+<body>
+	<span wicket:id="feedback">[feedback panel]</span>
+	<form wicket:id="loginForm"> 
+	
+		<table>
+			<tr><td>Name</td><td><input type="text" wicket:id="name"/><br/></td></tr>
+	    	<tr><td>Local Address </td><td><input type="text" wicket:id="address"/></td></tr>
+	    	
+	    	<tr>
+	    		<td>Protocol </td>
+	    		<td>
+	    			<select wicket:id="protocol">
+        				<option>Some Protocol</option>
+        			</select>
+	    		</td>
+	    	</tr>
+	    	
+	    	<tr><td>Port </td><td><input type="text" wicket:id="port"/></td></tr>
+	    	
+	    	<tr>
+	    		<td>Device Type </td>
+	    		<td>
+	    			<select wicket:id="devicetype">
+        				<option>Some Device Type</option>
+        			</select>
+	    		</td>
+	    	</tr>
+	    	
+	    	
+	    	<tr><td>CA File Name </td><td><input type="text" wicket:id="cafilename"/></td></tr>
+	    	<tr><td>Cert File Name </td><td><input type="text" wicket:id="certfilename"/></td></tr>
+	    	<tr><td>Key File Name </td><td><input type="text" wicket:id="keyfilename"/></td></tr>
+	    	<tr><td>Diffie Hellman File Name </td><td><input type="text" wicket:id="dhfilename"/></td></tr>
+	    	<tr><td>VPN Subnet </td><td><input type="text" wicket:id="vpnsubnet"/></td></tr>
+	    	<tr><td>Persist Pool File Name </td><td><input type="text" wicket:id="persistpoolfilename"/></td></tr>
+	    	<tr><td>Persist Key </td><td><input type="checkbox" wicket:id="persistkey"/></td></tr>
+	    	<tr><td>Persist Tun </td><td><input type="checkbox" wicket:id="persisttun"/></td></tr>
+	    	<tr><td>Status File Name </td><td><input type="text" wicket:id="statusfilename"/></td></tr>
+	    	<tr><td>Log File Name</td><td><input type="text" wicket:id="logfilename"/></td></tr>
+	    	<tr><td>Append Log</td><td><input type="checkbox" wicket:id="appendlog"/></td></tr>
+	    	<tr><td>Log Verbosity</td><td><input type="text" wicket:id="logverbosity"/></td></tr>
+	    	<tr><td>Enable Management</td><td><input type="checkbox" wicket:id="enablemanagement"/></td></tr>
+	    	<tr><td>Management Port </td><td><input type="text" wicket:id="managementport"/></td></tr>
+	    	<tr><td>Management Address</td><td> <input type="text" wicket:id="managementaddress"/></td></tr>
+	    </table>	
+    	
+    	
+    	
+		<input type="submit" value="Crear Servidor"/>
+    </form>
+</body>
+</html>
