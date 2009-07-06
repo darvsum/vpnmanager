@@ -9,6 +9,7 @@ import ar.com.gnuler.net.Protocol;
 // OpenVPN 2.0 Config File Generator, and maybe someday parser... ;)
 public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter, Serializable{
 	
+	private static final long serialVersionUID = -4482559440859755325L;
 	//Lexical Constants
 	private static final String NEWLINE = "\n";
 	private static final String SPACER = " ";
@@ -53,14 +54,19 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 	private static final String MODIFICATION_ADVISORY_3 = "#####################################################################";
 	
 	
-	public OpenVPN2ConfigInterpreter(){
+	private static OpenVPN2ConfigInterpreter INSTANCE = null;
+	
+	public static OpenVPN2ConfigInterpreter getInstance(){
+		if (INSTANCE == null)
+			INSTANCE = new OpenVPN2ConfigInterpreter();
 		
+		return INSTANCE;
 	}
 	
 	/* (non-Javadoc)
 	 * @see ar.com.gnuler.vpnmanager.iOpenVPNConfigFile#generateConfigFile()
 	 */
-	public String generateConfigFile(OpenVPNServer server){
+	public String generateConfigFile(OpenVPNServer server, String baseConfigPath, String baseLogPath, String baseRunPath){
 		
 		String config = "";
 		
@@ -91,13 +97,13 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 		config  += DEVICE + SPACER + server.getDev() + NEWLINE;
 		
 		// ca ca.crt
-		config += CA + SPACER + server.getCaFileName() + NEWLINE;
+		config += CA + SPACER + baseConfigPath + "/" + server.getCaFileName() + NEWLINE;
 		
 		// cert server.crt
-		config += CERTIFICATE + SPACER + server.getCertFileName() + NEWLINE;
+		config += CERTIFICATE + SPACER + baseConfigPath + "/" + server.getCertFileName() + NEWLINE;
 		
 		// key server.key
-		config += KEY + SPACER + server.getKeyFileName() + NEWLINE;
+		config += KEY + SPACER + baseConfigPath + "/" + server.getKeyFileName() + NEWLINE;
 		
 		// dh file.dh
 		config += DIFFIE_HELLMAN + SPACER + server.getDhFileName() + NEWLINE;
@@ -107,7 +113,7 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 				+ server.getVpnSubnet().getStringMask() + NEWLINE;
 		
 		// ifconfig-pool-persist /var/run/openvpn/ipp2.txt
-		config += PERSISTENT_POOL + SPACER + server.getPersistPoolFileName() + NEWLINE;
+		config += PERSISTENT_POOL + SPACER + baseRunPath + "/" + server.getPersistPoolFileName() + NEWLINE;
 		
 		// push "route 10.0.0.0 255.0.0.0"
 		for (IPV4Address addr: server.getPushRoutes()){
@@ -141,9 +147,9 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 		config += STATUS + SPACER + server.getStatusFileName() + NEWLINE;
 		
 		if (server.getAppendLog()){
-			config += LOG_APPEND + SPACER + server.getLogFilePath() + NEWLINE;
+			config += LOG_APPEND + SPACER + baseLogPath + "/" + server.getLogFilePath() + NEWLINE;
 		}else {
-			config += LOG + SPACER + server.getLogFilePath() + NEWLINE;
+			config += LOG + SPACER + baseLogPath + "/" + server.getLogFilePath() + NEWLINE;
 		}
 		
 		config += VERBOSITY + SPACER + server.getLogVerbosity() + NEWLINE;

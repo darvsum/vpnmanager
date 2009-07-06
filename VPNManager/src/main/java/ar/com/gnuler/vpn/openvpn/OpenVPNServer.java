@@ -15,7 +15,6 @@ public class OpenVPNServer implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	public static enum VirtualDeviceType {tun, tap};
-	IOpenVPNConfigFileInterpreter configInterpreter;
 	private String name;	//OpenVPN Instance name
 	
 	// OpenVPN Config Options
@@ -43,22 +42,19 @@ public class OpenVPNServer implements Serializable {
 	private Boolean enableManagement;
 	
 	
-	public OpenVPNServer (IOpenVPNConfigFileInterpreter configInterpreter){
-		this.configInterpreter = configInterpreter;
+	public OpenVPNServer (){
 	}
 	
-	public OpenVPNServer (String name, 
-			IOpenVPNConfigFileInterpreter configInterpreter){
+	public OpenVPNServer (String name){
 		this.name = name;
-		this.configInterpreter = configInterpreter;
 	}
 	
-	
-	public String getConfigFile(){
-		return configInterpreter.generateConfigFile(this);
-	}
 	
 	// Getters y Setters
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public String getName() {
 		return name;

@@ -25,7 +25,7 @@ import ar.com.gnuler.view.components.IPV4AddressField;
 import ar.com.gnuler.vpn.openvpn.OpenVPNServer;
 import ar.com.gnuler.vpn.openvpn.OpenVPNServerManager;
 
-public class CreateOpenVPNServerView extends WebPage {
+public class CreateOpenVPNServerView extends ViewTemplate {
 	
 	OpenVPNServer  server = null;
 	
@@ -42,20 +42,17 @@ public class CreateOpenVPNServerView extends WebPage {
 			private static final long serialVersionUID = 1L;
 			
 			public void onSubmit() {
-					System.out.println(server.getConfigFile());
+					OpenVPNServerManager.getInstance().installServer(server);
+					//TODO Redirigir a la pagina view de OpenVPNServers
 					
 			}
 
 		};
 			
-		
-		// Set default values, just for simplify testing
-		// TODO remove this
+		// Set default values
 		try {
 			server.setVpnSubnet(IPV4Address.getAddressFromString("192.168.1.1/255.255.255.0"));
-			
 			server.setLocalIP(IPV4Address.getAddressFromString("192.168.1.1"));
-			
 			server.setPort(1194);
 			server.setProtocol(Protocol.TCP);
 			server.setDev(OpenVPNServer.VirtualDeviceType.tun);
@@ -77,8 +74,8 @@ public class CreateOpenVPNServerView extends WebPage {
 			server.setKeyFileName("ca.key");
 			server.setEnableManagement(true);
 		
-		
 		} catch (NotSubnetException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NotHostException e) {
 			// TODO Auto-generated catch block
@@ -92,7 +89,7 @@ public class CreateOpenVPNServerView extends WebPage {
 		}
 		
 		// Ok
-		form.add(new TextField<String>("name", new Model<String>("")));
+		form.add(new TextField<String>("name", new PropertyModel<String>(server, "name")));
 		form.add(new IPV4AddressField("address", new PropertyModel<IPV4Address>(server, "localIP")));
 		form.add( new TextField<Integer>("port", new PropertyModel<Integer>(server, "port")));
 		form.add( new TextField<String>("cafilename", new PropertyModel<String>(server,"caFileName")));
@@ -106,10 +103,7 @@ public class CreateOpenVPNServerView extends WebPage {
 		form.add( new TextField<Integer>("logverbosity", new PropertyModel<Integer>(server, "logVerbosity")));
 		form.add( new TextField<Integer>("managementport", new PropertyModel<Integer>(server,"managementPort")));
 		form.add( new IPV4AddressField("managementaddress", new PropertyModel<IPV4Address>(server, "managementAddress")));
-		form.add(new IPV4AddressField("vpnsubnet", new PropertyModel<IPV4Address>(server, "vpnSubnet")));
-		
-		
-		// TODO ver como armar el modelo
+		form.add(new IPV4AddressField("vpnsubnet", new PropertyModel<IPV4Address>(server, "vpnSubnet"), true));
 		
 		DropDownChoice<Protocol> protocolsChoice = new DropDownChoice<Protocol>(
 				"protocol",
@@ -152,16 +146,6 @@ public class CreateOpenVPNServerView extends WebPage {
 		form.add( new CheckBox("persisttun", new PropertyModel<Boolean>(server, "persistTun")));
 		form.add( new CheckBox("appendlog", new PropertyModel<Boolean>(server, "appendLog")));
 		form.add( new CheckBox("enablemanagement", new PropertyModel<Boolean>(server, "enableManagement")));
-//		
-//		form.add( new TextField("persistkey", new Model("")));
-//		form.add( new TextField("persisttun", new Model("")));
-//		form.add( new TextField("appendlog", new Model("")));
-//		form.add( new TextField("enablemanagement", new Model("")));
-//		
-		
-		
-		
-		
 
 		
 		add(form);
