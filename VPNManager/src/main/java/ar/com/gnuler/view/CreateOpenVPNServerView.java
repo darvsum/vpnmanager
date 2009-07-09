@@ -44,7 +44,7 @@ public class CreateOpenVPNServerView extends ViewTemplate {
 			public void onSubmit() {
 					OpenVPNServerManager.getInstance().installServer(server);
 					//TODO Redirigir a la pagina view de OpenVPNServers
-					
+					setResponsePage(OpenVPNServersView.class);
 			}
 
 		};
@@ -58,14 +58,12 @@ public class CreateOpenVPNServerView extends ViewTemplate {
 			server.setDev(OpenVPNServer.VirtualDeviceType.tun);
 			server.setDhFileName("dh1024.pem");
 			server.setVpnSubnet(IPV4Address.getAddressFromString("172.40.0.0/255.255.0.0"));
-			server.setPersistPoolFileName("/var/run/openvpn/ipp2.txt");
 			server.addPushRoute(IPV4Address.getAddressFromString("10.0.0.0/255.0.0.0"));
 			server.addPushDNS(IPV4Address.getAddressFromString("10.10.1.180"));
 			server.setPersistKey(true);
 			server.setPersistTun(true);
 			server.setStatusFileName("/var/log/openvpn3-status.log");
 			server.setAppendLog(true);
-			server.setLogFilePath("var/log/openvpn.log");
 			server.setLogVerbosity(3);
 			server.setManagementAddress(IPV4Address.getAddressFromString("127.0.0.1"));
 			server.setManagementPort(7505);
@@ -96,10 +94,8 @@ public class CreateOpenVPNServerView extends ViewTemplate {
 		form.add( new TextField<String>("certfilename", new PropertyModel<String>(server,"certFileName")));
 		form.add( new TextField<String>("keyfilename", new PropertyModel<String>(server,"keyFileName")));
 		form.add( new TextField<String>("dhfilename", new PropertyModel<String>(server, "dhFileName")));
-		form.add( new TextField<String>("persistpoolfilename", new PropertyModel<String>(server, "persistPoolFileName")));
 		
 		form.add( new TextField<String>("statusfilename", new PropertyModel<String>(server,"statusFileName")));
-		form.add( new TextField<String>("logfilename", new PropertyModel<String>(server, "logFileName")));
 		form.add( new TextField<Integer>("logverbosity", new PropertyModel<Integer>(server, "logVerbosity")));
 		form.add( new TextField<Integer>("managementport", new PropertyModel<Integer>(server,"managementPort")));
 		form.add( new IPV4AddressField("managementaddress", new PropertyModel<IPV4Address>(server, "managementAddress")));

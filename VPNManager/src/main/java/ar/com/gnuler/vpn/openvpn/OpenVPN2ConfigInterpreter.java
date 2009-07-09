@@ -38,7 +38,7 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 	
 	private static final String STATUS = "status";
 	private static final String LOG = "log";
-	private static final String LOG_APPEND = "logappend";
+	private static final String LOG_APPEND = "log-append";
 	private static final String VERBOSITY = "verb";
 	private static final String MANAGEMENT = "management";
 	
@@ -53,6 +53,8 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 	private static final String MODIFICATION_ADVISORY_2 = "# all changes will be overwritten by the OPENVPN administrator.     #";
 	private static final String MODIFICATION_ADVISORY_3 = "#####################################################################";
 	
+	private static final String LOG_FILE_EXTENSION = ".log";
+	private static final String PERSISTENT_POOL_FILE_EXTENSION = ".pool"; 
 	
 	private static OpenVPN2ConfigInterpreter INSTANCE = null;
 	
@@ -113,7 +115,7 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 				+ server.getVpnSubnet().getStringMask() + NEWLINE;
 		
 		// ifconfig-pool-persist /var/run/openvpn/ipp2.txt
-		config += PERSISTENT_POOL + SPACER + baseRunPath + "/" + server.getPersistPoolFileName() + NEWLINE;
+		config += PERSISTENT_POOL + SPACER + baseRunPath + "/" + server.getName() + PERSISTENT_POOL_FILE_EXTENSION + NEWLINE;
 		
 		// push "route 10.0.0.0 255.0.0.0"
 		for (IPV4Address addr: server.getPushRoutes()){
@@ -147,9 +149,9 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 		config += STATUS + SPACER + server.getStatusFileName() + NEWLINE;
 		
 		if (server.getAppendLog()){
-			config += LOG_APPEND + SPACER + baseLogPath + "/" + server.getLogFilePath() + NEWLINE;
+			config += LOG_APPEND + SPACER + baseLogPath + "/" + server.getName() + LOG_FILE_EXTENSION + NEWLINE;
 		}else {
-			config += LOG + SPACER + baseLogPath + "/" + server.getLogFilePath() + NEWLINE;
+			config += LOG + SPACER + baseLogPath + "/" + server.getName() + LOG_FILE_EXTENSION + NEWLINE;
 		}
 		
 		config += VERBOSITY + SPACER + server.getLogVerbosity() + NEWLINE;

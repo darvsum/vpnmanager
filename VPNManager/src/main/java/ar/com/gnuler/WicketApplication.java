@@ -2,6 +2,7 @@ package ar.com.gnuler;
 
 import org.apache.wicket.protocol.http.WebApplication;
 import ar.com.gnuler.view.CreateOpenVPNServerView;
+import ar.com.gnuler.view.LogView;
 import ar.com.gnuler.view.OpenVPNServersView;
 
 /**
@@ -16,6 +17,13 @@ public class WicketApplication extends WebApplication
      */
 	public WicketApplication()
 	{
+		
+	}
+	
+	public void init(){
+		mountBookmarkablePage("/vpn/newserver", CreateOpenVPNServerView.class);
+		mountBookmarkablePage("/vpn", OpenVPNServersView.class);
+		mountBookmarkablePage("/logs", LogView.class);
 	}
 	
 	/**

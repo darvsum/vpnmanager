@@ -27,14 +27,12 @@ public class OpenVPNServer implements Serializable {
 	private String keyFileName;
 	private String dhFileName;
 	private IPV4Address vpnSubnet;
-	private String persistPoolFileName;
 	private ArrayList<IPV4Address> pushRoutes = new ArrayList<IPV4Address>();
 	private ArrayList<IPV4Address> pushDNS = new ArrayList<IPV4Address>();
 	private ArrayList<IPV4Address> pushWINS = new ArrayList<IPV4Address>();
 	private Boolean persistKey;
 	private Boolean persistTun;
 	private String statusFileName;
-	private String logFileName;
 	private Boolean appendLog;
 	private int logVerbosity;
 	private int managementPort;
@@ -129,12 +127,7 @@ public class OpenVPNServer implements Serializable {
 			throw new NotSubnetException();
 		this.vpnSubnet = vpnSubnet;
 	}
-	public String getPersistPoolFileName() {
-		return persistPoolFileName;
-	}
-	public void setPersistPoolFileName(String persistPoolFileName) {
-		this.persistPoolFileName = persistPoolFileName;
-	}
+	
 	public ArrayList<IPV4Address> getPushRoutes() {
 		return pushRoutes;
 	}
@@ -174,12 +167,6 @@ public class OpenVPNServer implements Serializable {
 	}
 	public void setStatusFileName(String statusFileName) {
 		this.statusFileName = statusFileName;
-	}
-	public String getLogFilePath() {
-		return logFileName;
-	}
-	public void setLogFilePath(String logFilePath) {
-		this.logFileName = logFilePath;
 	}
 	public Boolean getAppendLog() {
 		return appendLog;

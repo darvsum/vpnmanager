@@ -23,6 +23,10 @@
 			<param-name>applicationClassName</param-name>
 			<param-value>ar.com.gnuler.WicketApplication</param-value>
  		</init-param>
+		<init-param>
+			<param-name>development</param-name>
+ 		</init-param>
+
  	</filter>
 
  <filter-mapping>
