@@ -1,5 +1,7 @@
 package ar.com.gnuler;
 
+import java.security.Security;
+
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
@@ -8,6 +10,9 @@ import org.mortbay.jetty.webapp.WebAppContext;
 public class Start {
 
 	public static void main(String[] args) throws Exception {
+		
+//		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+		
 		Server server = new Server();
 		SocketConnector connector = new SocketConnector();
 		

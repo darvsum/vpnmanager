@@ -24,7 +24,7 @@ public class OpenVPNServerAdminView extends ViewTemplate {
 		// Create the title
 		add(new Label("name","Server " + serverName ));
 		add(new StartStopOpenVPNServerButton("startstop", serverName));
-		
+		add(new LogPanel("log", OpenVPNServerManager.getLogPath(OpenVPNServerManager.getInstance().getInstalledServer(serverName))));
 		
 	}
 	

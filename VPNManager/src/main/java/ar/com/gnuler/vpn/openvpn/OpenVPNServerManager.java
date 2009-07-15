@@ -63,6 +63,7 @@ public class OpenVPNServerManager implements ProcessListener {
 			System.out.println("- Directorio Creado");	
 			try{
 				
+				// Generate Config File
 				FileWriter fstream = new FileWriter(BASE_INSTANCE_DIR + "/" + server.getName() + "/" + CONF_FILE_NAME);
 				BufferedWriter out = new BufferedWriter(fstream);
 				
@@ -74,6 +75,16 @@ public class OpenVPNServerManager implements ProcessListener {
 								BASE_RUN_DIR));
 				
 				out.close();
+				
+				// Generate Config File
+				FileWriter fstream2 = new FileWriter(getLogPath(server));
+				BufferedWriter out2 = new BufferedWriter(fstream2);
+				
+				out2.write("##LOG-BEGIN##");
+				
+				out2.close();
+				
+				
 				installedServers.put(server.getName(), server);
 				result = true;
 				

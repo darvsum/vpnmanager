@@ -3,6 +3,7 @@
   <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/bouncycastle/bcprov-jdk16/140/bcprov-jdk16-140.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty/6.1.4/jetty-6.1.4.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty/6.1.4/jetty-6.1.4-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-management/6.1.4/jetty-management-6.1.4.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty-management/6.1.4/jetty-management-6.1.4-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-util/6.1.4/jetty-util-6.1.4.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty-util/6.1.4/jetty-util-6.1.4-sources.jar"/>

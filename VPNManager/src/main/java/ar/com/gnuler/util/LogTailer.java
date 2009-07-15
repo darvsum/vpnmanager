@@ -4,13 +4,16 @@ package ar.com.gnuler.util;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.Serializable;
 import java.util.EventListener;
 import java.util.LinkedList;
 import java.util.List;
 
 //Adapted from JLogTailer
 // http://www.jibble.org/jlogtailer.php
-public class LogTailer extends Thread {
+public class LogTailer extends Thread implements Serializable {
+
+	private static final long serialVersionUID = 8540998139728302348L;
 	private boolean running;
 	private int updateInterval = 1000;
     private File file;
@@ -50,13 +53,11 @@ public class LogTailer extends Thread {
     private void appendMessage(String message){
     	messages.add(message);
     	listener.messageUpdated(message);
-    	System.out.println(message);
     }
     
     private void appendLine(String line){
     	log.add(line);
     	listener.logUpdated(line);
-		System.out.println(line);
     }
     
     public List<String> getMessages(){
@@ -65,6 +66,10 @@ public class LogTailer extends Thread {
     
     public List<String> getLog(){
     	return this.log;
+    }
+    
+    public void stopThread(){
+    	this.running = false;
     }
     
 	public void run() {
@@ -92,6 +97,8 @@ public class LogTailer extends Thread {
                     raf.close();
                 }
             }
+            this.appendMessage("Log tail stopped.");
+
         }
         catch (Exception e) {
             this.appendMessage("Fatal error reading log file, log tailing has stopped.");

@@ -19,8 +19,19 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
 	<dependencies>
+
+
+		<dependency>
+		    <groupId>bouncycastle</groupId>
+		    <artifactId>bcprov-jdk16</artifactId>
+		    <version>140</version>
+		</dependency> 
+
+
 		<!--  WICKET DEPENDENCIES -->
+		
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
