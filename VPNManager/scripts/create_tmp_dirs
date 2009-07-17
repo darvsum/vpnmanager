@@ -3,6 +3,6 @@
 mkdir /tmp/openvpn
 mkdir /tmp/openvpn/var
 mkdir /tmp/openvpn/instances
-mkdir /tmp/openvpn/var/log
-mkdir /tmp/openvpn/var/run
+mkdir /tmp/openvpn/log
+mkdir /tmp/openvpn/run
 

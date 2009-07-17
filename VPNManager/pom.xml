@@ -22,7 +22,6 @@
 
 	<dependencies>
 
-
 		<dependency>
 		    <groupId>bouncycastle</groupId>
 		    <artifactId>bcprov-jdk16</artifactId>

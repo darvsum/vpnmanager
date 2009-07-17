@@ -45,11 +45,7 @@ public class OpenVPNServersList extends DataView<String> {
 		item.add(new Label("name", serverName));
 		
 		// Show server status
-		if (OpenVPNServerManager.getInstance().isRunning(serverName))
-	    	state = "Running";
-	    else
-	    	state = "Stopped";
-	    item.add(new Label("state", state));
+	    item.add(new Label("state", OpenVPNServerManager.getInstance().getServerStatus(serverName).toString()));
 	    
 	    // Delete button
 	    item.add(new DeleteOpenVPNServerButton("delete", serverName, componentToUpdate));

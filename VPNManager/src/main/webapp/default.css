@@ -365,3 +365,39 @@ a:hover {
 #footer a:hover {
 	text-decoration: none;
 }
+
+
+/* Servers table view */
+table.servers
+{
+	text-align: center;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+	font-weight: normal;
+	font-size: 11px;
+	color: #fff;
+	width: 564px;
+	background-color: #666;
+	border: 0px;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+table.servers td
+{
+	background-color: #CCC;
+	color: #000;
+	padding: 4px;
+	text-align: left;
+	border: 1px #fff solid;
+}
+
+table.servers thead
+{
+	background-color: #666;
+	color: #fff;
+	padding: 4px;
+	text-align: center;
+	border-bottom: 2px #fff solid;
+	font-size: 12px;
+	font-weight: bold;
+} 

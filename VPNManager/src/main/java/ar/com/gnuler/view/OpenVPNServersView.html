@@ -5,19 +5,27 @@
 	
 
 	<div class="entry">
-		<table>
-		<tbody>
-			<span wicket:id="container">
-			<tr wicket:id="servers">
-				<td><span wicket:id="name">Test ID</span></td>
-				<td><span wicket:id="state">Test ID</span></td>
-				<td><a href="#" wicket:id="delete">delete</a></td>
-				<td><a href="#" wicket:id="startstoplink"><span wicket:id="startstoplabel">Test ID</span></a></td>
-				<td><a href="#" wicket:id="viewlog">view log</a></td>
-
-			</tr>
-			</span>
-		</tbody>
+		<table class="servers" cellspacing="0">
+			<thead>
+				<tr>
+					<th>Server Name</th>
+					<th>State</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<span wicket:id="container">
+				<tr wicket:id="servers">
+					<td><span wicket:id="name">Test ID</span></td>
+					<td><span wicket:id="state">Test ID</span></td>
+					<td>
+						<a href="#" wicket:id="delete">delete</a>
+						<a href="#" wicket:id="startstoplink"><span wicket:id="startstoplabel">Test ID</span></a>
+						<a href="#" wicket:id="viewlog">view log</a>
+					</td>	
+				</tr>
+				</span>
+			</tbody>
 		</table>
 	
 	</div>

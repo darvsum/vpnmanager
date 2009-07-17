@@ -108,7 +108,7 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 		config += KEY + SPACER + baseConfigPath + "/" + server.getKeyFileName() + NEWLINE;
 		
 		// dh file.dh
-		config += DIFFIE_HELLMAN + SPACER + server.getDhFileName() + NEWLINE;
+		config += DIFFIE_HELLMAN + SPACER + OpenVPNServerManager.getDHParamPath(server) + NEWLINE;
 		
 		// server xxx.xxx.xxx.xxx yyy.yyy.yyy.yyy
 		config += VPN_RANGE + SPACER + server.getVpnSubnet().getStringNet() + SPACER
