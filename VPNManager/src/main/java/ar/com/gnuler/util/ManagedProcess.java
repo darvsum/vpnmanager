@@ -1,11 +1,12 @@
 package ar.com.gnuler.util;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
 
-public class ManagedProcess extends Thread{
+public class ManagedProcess extends Thread implements Serializable {
 	private Process process;
 	private String cmd;
 	private String id;

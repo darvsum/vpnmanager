@@ -1,73 +1,70 @@
 package ar.com.gnuler;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.security.SecureRandom;
+import java.security.KeyPair;
 import java.security.Security;
+import java.security.cert.X509Certificate;
 
-import org.bouncycastle.asn1.pkcs.DHParameter;
-import org.bouncycastle.crypto.generators.DHParametersGenerator;
-import org.bouncycastle.crypto.params.DHParameters;
-import org.bouncycastle.openssl.PEMWriter;
-
-import ar.com.gnuler.pki.CAStore;
-import ar.com.gnuler.pki.CertificateAuthorityFactory;
-import ar.com.gnuler.pki.DHParamPEMWriter;
-import ar.com.gnuler.pki.ICertificateAuthority;
+import org.bouncycastle.openssl.PEMReader;
 
 public class PKITest {
 
 	
-	
-	public static void main(String[] args){
-		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+	public PKITest(){
 		
-		
-		 System.out.println("Generating 1...");
-		 DHParametersGenerator gen = new DHParametersGenerator();
-		 System.out.println("Generating 2...");
-		 SecureRandom srand = new SecureRandom();
-		 System.out.println("Generating 3...");
-		 gen.init(512, 10, srand);
-		 System.out.println("Generating 4...");
-		 
-		 DHParameters params = gen.generateParameters();
-		 System.out.println("Generating 5...");
-		 DHParameter  param = new DHParameter(params.getP(), params.getG(), params.getL());
-		 System.out.println("Generating 6...");
-		 
-		 
-		 
-		 try {
-			System.out.println(param.getEncoded(DHParameter.DER));
-			
-			System.out.println(param.getDEREncoded());
-			
-			System.out.println("-------------------1");
-			DHParamPEMWriter a = new DHParamPEMWriter(new OutputStreamWriter(System.out));
-			a.writeObject(param);
-			System.out.println("-------------------2");
-			
-			System.out.println("-------------------3");
-			a.close();
-//			
-//			PEMWriter        pemWrt = new PEMWriter(new OutputStreamWriter(System.out));
-////	        pemWrt.writeObject(param.getEncoded(DHParameter.DER));
-//	        pemWrt.writeObject(param.getDERObject());
-//	        pemWrt.close();
 
+		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+
+		try {
+
+			// Leer un certificado en formato PEM
+			X509Certificate cert = readX509CertificateFromPEMFile(new File("server.crt"));
+			System.out.println(cert.toString());
+	
 			
+			// Leer un KeyPair en formato PEM
+			KeyPair keyPair = readKeyPairFromPEMFile(new File("server.key"));
+			System.out.println(keyPair.getPrivate().toString());
+			System.out.println(keyPair.getPublic().toString());
 			
-			
-			System.out.println("Generated :)");
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		 
+	}
+	
+	private static X509Certificate readX509CertificateFromPEMFile(File file) throws IOException{
 		
-		 
-		 
+		X509Certificate cert = null;
+		PEMReader pemReader = null;
+		
+		pemReader = new PEMReader(new FileReader(file));
+		cert = (X509Certificate)pemReader.readObject();
+
+		return cert;
+	
+		
+	}
+	
+	private KeyPair readKeyPairFromPEMFile(File file) throws IOException{
+		
+		KeyPair keyPair = null;
+		PEMReader pemReader = null;
+		pemReader = new PEMReader(new FileReader(file));
+		keyPair = (KeyPair)pemReader.readObject();
+		
+		return keyPair;
+
+	}
+	
+	
+	public static void main(String[] args){
+		
+		 new PKITest();
 		
 	}
 	

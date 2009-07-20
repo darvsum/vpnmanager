@@ -1,8 +1,14 @@
 package ar.com.gnuler.pki;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.KeyPair;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,12 +40,15 @@ import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 public class CertificateAuthority implements ICertificateAuthority, Serializable{
 
 	private static final long serialVersionUID = 1869081843311360477L;
-	X509Certificate rootCert;
-	KeyPair rootPair;
-	
+	private X509Certificate rootCert = null;
+	private KeyPair rootPair = null;
 	private String name;
+	private List<GenericCertificate> certs = new ArrayList<GenericCertificate>();
 	
-	private List<X509Certificate> certs = new ArrayList<X509Certificate>();
+	public CertificateAuthority(X509Certificate rootCert, String name){
+		this.rootCert = rootCert;
+		this.name = name;
+	}
 	
 	public CertificateAuthority(X509Certificate rootCert, KeyPair rootPair, String name){
 		this.rootCert = rootCert;
@@ -47,116 +56,143 @@ public class CertificateAuthority implements ICertificateAuthority, Serializable
 		this.name = name;
 	}
 	
-	public void createServerCert(String DN, String Mail) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public String getName(){
 		return name;
 	}
 
-	@SuppressWarnings("unchecked")
-	public UserCertificate createUserCert(String DN, String Mail) throws Exception {
-		 // create the certification request
-        KeyPair          pair = Utils.generateRSAKeyPair();
-        
-        PKCS10CertificationRequest  request = generateRequest(pair);
-        
-        // validate the certification request
-        if (!request.verify("BC"))
-        {
-            System.out.println("request failed to verify!");
-            System.exit(1);
-        }
-        
-        // create the certificate using the information in the request
-        X509V3CertificateGenerator  certGen = new X509V3CertificateGenerator();
-
-        certGen.setSerialNumber(BigInteger.valueOf(System.currentTimeMillis()));
-        certGen.setIssuerDN(rootCert.getSubjectX500Principal());
-        certGen.setNotBefore(new Date(System.currentTimeMillis()));
-        certGen.setNotAfter(new Date(System.currentTimeMillis() + 50000));
-        certGen.setSubjectDN(request.getCertificationRequestInfo().getSubject());
-        certGen.setPublicKey(request.getPublicKey("BC"));
-        certGen.setSignatureAlgorithm("SHA256WithRSAEncryption");
-        
-        certGen.addExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(rootCert));
-        
-        certGen.addExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(request.getPublicKey("BC")));
-        
-        certGen.addExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(false));
-        
-        certGen.addExtension(X509Extensions.KeyUsage, true, new KeyUsage(KeyUsage.digitalSignature | KeyUsage.keyEncipherment));
-        
-        certGen.addExtension(X509Extensions.ExtendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
-        
-        // extract the extension request attribute
-        ASN1Set attributes = request.getCertificationRequestInfo().getAttributes();
-        
-        for (int i = 0; i != attributes.size(); i++)
-        {
-            Attribute    attr = Attribute.getInstance(attributes.getObjectAt(i));
-            
-            // process extension request
-            if (attr.getAttrType().equals(PKCSObjectIdentifiers.pkcs_9_at_extensionRequest))
-            {
-                X509Extensions extensions = X509Extensions.getInstance(attr.getAttrValues().getObjectAt(0));
-                
-                Enumeration<DERObjectIdentifier> e = extensions.oids();
-                while (e.hasMoreElements())
-                {
-                    DERObjectIdentifier oid = e.nextElement();
-                    X509Extension       ext = extensions.getExtension(oid);
-                    
-                    certGen.addExtension(oid, ext.isCritical(), ext.getValue().getOctets());
-                }
-            }
-        }
-        
-        X509Certificate  issuedCert = certGen.generate(rootPair.getPrivate());
-        
-        return new UserCertificate(issuedCert, rootCert, pair);
-		
-	}
-
-    private PKCS10CertificationRequest generateRequest(
-            KeyPair pair)
-            throws Exception
-        {
-            // create a SubjectAlternativeName extension value
-            GeneralNames  subjectAltNames = new GeneralNames(
-                     new GeneralName(GeneralName.rfc822Name, "test@test.test"));
-
-            // create the extensions object and add it as an attribute
-            Vector<DERObjectIdentifier>  oids = new Vector<DERObjectIdentifier>();
-            Vector<X509Extension>	values = new Vector<X509Extension>();
-
-            oids.add(X509Extensions.SubjectAlternativeName);
-            values.add(new X509Extension(false, new DEROctetString(subjectAltNames)));
-            
-            X509Extensions	extensions = new X509Extensions(oids, values);
-            
-            Attribute  attribute = new Attribute(
-                                     PKCSObjectIdentifiers.pkcs_9_at_extensionRequest, 
-                                     new DERSet(extensions));
-            
-            return new PKCS10CertificationRequest(
-                    "SHA256withRSA",
-                    new X500Principal("CN=Requested Test Certificate"),
-                    pair.getPublic(),
-                    new DERSet(attribute),
-                    pair.getPrivate());
-        }
-
 	
-	public List<X509Certificate> getCertificates(){
+	/* (non-Javadoc)
+	 * @see ar.com.gnuler.pki.ICertificateAuthority#getCertificates()
+	 */
+	public List<GenericCertificate> getCertificates(){
 		return this.certs;
 	}
 	
 	
-	public void add(X509Certificate cert){
+	/* (non-Javadoc)
+	 * @see ar.com.gnuler.pki.ICertificateAuthority#add(ar.com.gnuler.pki.GenericCertificate)
+	 */
+	public void add(GenericCertificate cert){
 		this.add(cert);
 	}
+
+	/* (non-Javadoc)
+	 * @see ar.com.gnuler.pki.ICertificateAuthority#exportPEMCert(java.lang.String)
+	 */
+	public void exportPEMCert(String fileName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see ar.com.gnuler.pki.ICertificateAuthority#importPEMCertificate(java.lang.String)
+	 */
+	public void importPEMCertificate(String fileName) {
+		X509Certificate cert = Utils.readX509CertificateFromPEMFile(fileName);
+//		GenericCertificate cert2 = new GenericCertificate(cert, "");
+		
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+	
+	
+	
+	// Lo siguiente es el código para emitir certificados, lo dejo aca para cuando tenga ganas de implementarlo :p
+	//
+//	@SuppressWarnings("unchecked")
+//	public UserCertificate createUserCert(String DN, String Mail) throws Exception {
+//		 // create the certification request
+//        KeyPair          pair = Utils.generateRSAKeyPair();
+//        
+//        PKCS10CertificationRequest  request = generateRequest(pair);
+//        
+//        // validate the certification request
+//        if (!request.verify("BC"))
+//        {
+//            System.out.println("request failed to verify!");
+//            System.exit(1);
+//        }
+//        
+//        // create the certificate using the information in the request
+//        X509V3CertificateGenerator  certGen = new X509V3CertificateGenerator();
+//
+//        certGen.setSerialNumber(BigInteger.valueOf(System.currentTimeMillis()));
+//        certGen.setIssuerDN(rootCert.getSubjectX500Principal());
+//        certGen.setNotBefore(new Date(System.currentTimeMillis()));
+//        certGen.setNotAfter(new Date(System.currentTimeMillis() + 50000));
+//        certGen.setSubjectDN(request.getCertificationRequestInfo().getSubject());
+//        certGen.setPublicKey(request.getPublicKey("BC"));
+//        certGen.setSignatureAlgorithm("SHA256WithRSAEncryption");
+//        
+//        certGen.addExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(rootCert));
+//        
+//        certGen.addExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(request.getPublicKey("BC")));
+//        
+//        certGen.addExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(false));
+//        
+//        certGen.addExtension(X509Extensions.KeyUsage, true, new KeyUsage(KeyUsage.digitalSignature | KeyUsage.keyEncipherment));
+//        
+//        certGen.addExtension(X509Extensions.ExtendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
+//        
+//        // extract the extension request attribute
+//        ASN1Set attributes = request.getCertificationRequestInfo().getAttributes();
+//        
+//        for (int i = 0; i != attributes.size(); i++)
+//        {
+//            Attribute    attr = Attribute.getInstance(attributes.getObjectAt(i));
+//            
+//            // process extension request
+//            if (attr.getAttrType().equals(PKCSObjectIdentifiers.pkcs_9_at_extensionRequest))
+//            {
+//                X509Extensions extensions = X509Extensions.getInstance(attr.getAttrValues().getObjectAt(0));
+//                
+//                Enumeration<DERObjectIdentifier> e = extensions.oids();
+//                while (e.hasMoreElements())
+//                {
+//                    DERObjectIdentifier oid = e.nextElement();
+//                    X509Extension       ext = extensions.getExtension(oid);
+//                    
+//                    certGen.addExtension(oid, ext.isCritical(), ext.getValue().getOctets());
+//                }
+//            }
+//        }
+//        
+//        X509Certificate  issuedCert = certGen.generate(rootPair.getPrivate());
+//        
+//        return new UserCertificate(issuedCert, rootCert, pair);
+//		
+//	}
+//
+//    private PKCS10CertificationRequest generateRequest(
+//            KeyPair pair)
+//            throws Exception
+//        {
+//            // create a SubjectAlternativeName extension value
+//            GeneralNames  subjectAltNames = new GeneralNames(
+//                     new GeneralName(GeneralName.rfc822Name, "test@test.test"));
+//
+//            // create the extensions object and add it as an attribute
+//            Vector<DERObjectIdentifier>  oids = new Vector<DERObjectIdentifier>();
+//            Vector<X509Extension>	values = new Vector<X509Extension>();
+//
+//            oids.add(X509Extensions.SubjectAlternativeName);
+//            values.add(new X509Extension(false, new DEROctetString(subjectAltNames)));
+//            
+//            X509Extensions	extensions = new X509Extensions(oids, values);
+//            
+//            Attribute  attribute = new Attribute(
+//                                     PKCSObjectIdentifiers.pkcs_9_at_extensionRequest, 
+//                                     new DERSet(extensions));
+//            
+//            return new PKCS10CertificationRequest(
+//                    "SHA256withRSA",
+//                    new X500Principal("CN=Requested Test Certificate"),
+//                    pair.getPublic(),
+//                    new DERSet(attribute),
+//                    pair.getPrivate());
+//        }
     
 }

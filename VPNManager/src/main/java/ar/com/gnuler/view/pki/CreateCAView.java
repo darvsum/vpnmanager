@@ -26,7 +26,7 @@ import ar.com.gnuler.pki.CertificateAuthorityFactory;
 import ar.com.gnuler.pki.ICertificateAuthority;
 import ar.com.gnuler.view.ViewTemplate;
 import ar.com.gnuler.view.components.IPV4AddressField;
-import ar.com.gnuler.vpn.openvpn.OpenVPNServer;
+import ar.com.gnuler.vpn.openvpn.OpenVPNServerInstance;
 import ar.com.gnuler.vpn.openvpn.OpenVPNServerManager;
 
 public class CreateCAView extends ViewTemplate {

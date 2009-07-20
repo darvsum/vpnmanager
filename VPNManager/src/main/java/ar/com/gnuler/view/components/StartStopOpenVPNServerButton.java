@@ -4,8 +4,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.markup.html.basic.Label;
 
+import ar.com.gnuler.vpn.openvpn.OpenVPNServerInstance;
 import ar.com.gnuler.vpn.openvpn.OpenVPNServerManager;
-import ar.com.gnuler.vpn.openvpn.OpenVPNServerManager.OpenVPNServerStatus;
+import ar.com.gnuler.vpn.openvpn.OpenVPNServerInstance.OpenVPNServerStatus;
+
 
 
 /*
@@ -17,16 +19,17 @@ import ar.com.gnuler.vpn.openvpn.OpenVPNServerManager.OpenVPNServerStatus;
 public class StartStopOpenVPNServerButton extends AjaxFallbackLink<String>{
 	
 	private static final long serialVersionUID = 1L;
-	private String serverName;
+	private OpenVPNServerInstance server;
 	String action;
 	
 	public StartStopOpenVPNServerButton(String id, String serverName) {
 		super(id + "link");
-		this.serverName = serverName;
+		
+		server = OpenVPNServerManager.getInstance().getInstalledServer(serverName);
 		
 		//Generate the corresponding label depending of the current state
 		
-		OpenVPNServerStatus status = OpenVPNServerManager.getInstance().getServerStatus(serverName);
+		OpenVPNServerStatus status = server.getServerStatus();
 		
 		
 		if (status == OpenVPNServerStatus.RUNNING)
@@ -43,14 +46,14 @@ public class StartStopOpenVPNServerButton extends AjaxFallbackLink<String>{
 	public void onClick(AjaxRequestTarget target) {
         if (target != null) {
         	
-        	OpenVPNServerStatus status = OpenVPNServerManager.getInstance().getServerStatus(serverName);
+        	OpenVPNServerStatus status = server.getServerStatus();
         	
         	//If is running stop the process, if not start it
         	try {
         		if (status == OpenVPNServerStatus.RUNNING)
-        			OpenVPNServerManager.getInstance().stopServer(serverName);
+        			server.stop();
         		else if (status == OpenVPNServerStatus.STOPPED)
-        			OpenVPNServerManager.getInstance().startServer(serverName);
+        			server.start();
         		//else: do nothing.
         		
 			} catch (Exception e) {

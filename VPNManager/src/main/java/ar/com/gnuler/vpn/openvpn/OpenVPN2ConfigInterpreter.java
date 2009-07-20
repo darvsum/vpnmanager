@@ -68,7 +68,7 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 	/* (non-Javadoc)
 	 * @see ar.com.gnuler.vpnmanager.iOpenVPNConfigFile#generateConfigFile()
 	 */
-	public String generateConfigFile(OpenVPNServer server, String baseConfigPath, String baseLogPath, String baseRunPath){
+	public String generateConfigFile(OpenVPNServerInstance server, String baseConfigPath, String baseLogPath, String baseRunPath){
 		
 		String config = "";
 		
@@ -108,7 +108,7 @@ public class OpenVPN2ConfigInterpreter implements IOpenVPNConfigFileInterpreter,
 		config += KEY + SPACER + baseConfigPath + "/" + server.getKeyFileName() + NEWLINE;
 		
 		// dh file.dh
-		config += DIFFIE_HELLMAN + SPACER + OpenVPNServerManager.getDHParamPath(server) + NEWLINE;
+		config += DIFFIE_HELLMAN + SPACER + server.getDHParamPath() + NEWLINE;
 		
 		// server xxx.xxx.xxx.xxx yyy.yyy.yyy.yyy
 		config += VPN_RANGE + SPACER + server.getVpnSubnet().getStringNet() + SPACER

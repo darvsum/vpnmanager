@@ -15,7 +15,7 @@ import org.apache.wicket.model.Model;
 
 import ar.com.gnuler.pki.CAStore;
 import ar.com.gnuler.pki.CertificateAuthority;
-import ar.com.gnuler.view.OpenVPNServerAdminView;
+import ar.com.gnuler.view.vpn.OpenVPNServerAdminView;
 import ar.com.gnuler.vpn.openvpn.OpenVPNServerManager;
 
 /*

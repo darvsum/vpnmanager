@@ -7,7 +7,9 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import ar.com.gnuler.view.OpenVPNServerAdminView;
+
+import ar.com.gnuler.view.vpn.OpenVPNServerAdminView;
+import ar.com.gnuler.vpn.openvpn.OpenVPNServerInstance;
 import ar.com.gnuler.vpn.openvpn.OpenVPNServerManager;
 
 /*
@@ -39,13 +41,13 @@ public class OpenVPNServersList extends DataView<String> {
 	@Override
 	protected void populateItem(Item<String> item) {
 		String serverName = item.getModelObject();
-		String state;
+		OpenVPNServerInstance server = OpenVPNServerManager.getInstance().getInstalledServer(serverName);
 		
 		// Server Name label
 		item.add(new Label("name", serverName));
 		
 		// Show server status
-	    item.add(new Label("state", OpenVPNServerManager.getInstance().getServerStatus(serverName).toString()));
+	    item.add(new Label("state", server.getServerStatus().toString()));
 	    
 	    // Delete button
 	    item.add(new DeleteOpenVPNServerButton("delete", serverName, componentToUpdate));
@@ -56,7 +58,7 @@ public class OpenVPNServersList extends DataView<String> {
 	    
 	    // Server Detail button
 	    item.add(new BookmarkablePageLink<String>(
-	    		"viewlog",
+	    		"admin",
 	    		OpenVPNServerAdminView.class, 
 	    		new PageParameters("s=" + serverName)));
 	

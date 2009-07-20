@@ -1,4 +1,4 @@
-package ar.com.gnuler.view;
+package ar.com.gnuler.view.vpn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +21,20 @@ import ar.com.gnuler.net.Protocol;
 import ar.com.gnuler.net.exceptions.InvalidProtocolException;
 import ar.com.gnuler.net.exceptions.NotHostException;
 import ar.com.gnuler.net.exceptions.NotSubnetException;
+import ar.com.gnuler.view.ViewTemplate;
 import ar.com.gnuler.view.components.IPV4AddressField;
-import ar.com.gnuler.vpn.openvpn.OpenVPNServer;
+import ar.com.gnuler.vpn.openvpn.OpenVPNServerInstance;
 import ar.com.gnuler.vpn.openvpn.OpenVPNServerManager;
 
 public class CreateOpenVPNServerView extends ViewTemplate {
 	
-	OpenVPNServer  server = null;
+	String serverName;
+	OpenVPNServerInstance  server = null;
 	
 	public CreateOpenVPNServerView(){
 		
 		
 		server = OpenVPNServerManager.getInstance().createServer();
-		
 		
 		
 		Form form = new Form("loginForm"){
@@ -44,7 +45,7 @@ public class CreateOpenVPNServerView extends ViewTemplate {
 			public void onSubmit() {
 					OpenVPNServerManager.getInstance().installServer(server);
 					//TODO Redirigir a la pagina view de OpenVPNServers
-					setResponsePage(OpenVPNServersView.class);
+					setResponsePage(OpenVPNMainView.class);
 			}
 
 		};
@@ -55,8 +56,7 @@ public class CreateOpenVPNServerView extends ViewTemplate {
 			server.setLocalIP(IPV4Address.getAddressFromString("192.168.1.1"));
 			server.setPort(1194);
 			server.setProtocol(Protocol.TCP);
-			server.setDev(OpenVPNServer.VirtualDeviceType.tun);
-			server.setDhFileName("dh1024.pem");
+			server.setDev(OpenVPNServerInstance.VirtualDeviceType.tun);
 			server.setVpnSubnet(IPV4Address.getAddressFromString("172.40.0.0/255.255.0.0"));
 			server.addPushRoute(IPV4Address.getAddressFromString("10.0.0.0/255.0.0.0"));
 			server.addPushDNS(IPV4Address.getAddressFromString("10.10.1.180"));
@@ -93,7 +93,6 @@ public class CreateOpenVPNServerView extends ViewTemplate {
 		form.add( new TextField<String>("cafilename", new PropertyModel<String>(server,"caFileName")));
 		form.add( new TextField<String>("certfilename", new PropertyModel<String>(server,"certFileName")));
 		form.add( new TextField<String>("keyfilename", new PropertyModel<String>(server,"keyFileName")));
-		form.add( new TextField<String>("dhfilename", new PropertyModel<String>(server, "dhFileName")));
 		
 		form.add( new TextField<String>("statusfilename", new PropertyModel<String>(server,"statusFileName")));
 		form.add( new TextField<Integer>("logverbosity", new PropertyModel<Integer>(server, "logVerbosity")));
@@ -120,17 +119,17 @@ public class CreateOpenVPNServerView extends ViewTemplate {
 		
 		form.add(protocolsChoice);
 		
-		DropDownChoice<OpenVPNServer.VirtualDeviceType> deviceTypeChoice = new DropDownChoice<OpenVPNServer.VirtualDeviceType>(
+		DropDownChoice<OpenVPNServerInstance.VirtualDeviceType> deviceTypeChoice = new DropDownChoice<OpenVPNServerInstance.VirtualDeviceType>(
 				"devicetype",
-				new PropertyModel<OpenVPNServer.VirtualDeviceType>(server, "dev"),
-				new LoadableDetachableModel<List<OpenVPNServer.VirtualDeviceType>>(){
+				new PropertyModel<OpenVPNServerInstance.VirtualDeviceType>(server, "dev"),
+				new LoadableDetachableModel<List<OpenVPNServerInstance.VirtualDeviceType>>(){
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					protected List<OpenVPNServer.VirtualDeviceType> load() {
-						List<OpenVPNServer.VirtualDeviceType> l = new ArrayList<OpenVPNServer.VirtualDeviceType>();
-						l.add(OpenVPNServer.VirtualDeviceType.tap);
-						l.add(OpenVPNServer.VirtualDeviceType.tun);
+					protected List<OpenVPNServerInstance.VirtualDeviceType> load() {
+						List<OpenVPNServerInstance.VirtualDeviceType> l = new ArrayList<OpenVPNServerInstance.VirtualDeviceType>();
+						l.add(OpenVPNServerInstance.VirtualDeviceType.tap);
+						l.add(OpenVPNServerInstance.VirtualDeviceType.tun);
                         return l;
                     }
 					

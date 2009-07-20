@@ -1,14 +1,15 @@
-package ar.com.gnuler.view;
+package ar.com.gnuler.view.vpn;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
+import ar.com.gnuler.view.ViewTemplate;
 import ar.com.gnuler.view.components.OpenVPNServersList;
 
-public class OpenVPNServersView extends ViewTemplate {
+public class OpenVPNMainView extends ViewTemplate {
 	
 	private WebMarkupContainer container;
 	
-	public OpenVPNServersView(){
+	public OpenVPNMainView(){
 		
 //		List<String> serverNameList = new Vector<String>(OpenVPNServerManager.getInstance().getInstalledServerNames());
 		
