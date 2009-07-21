@@ -14,8 +14,6 @@ public class PKIMainView extends ViewTemplate {
 	
 	public PKIMainView(){
 		
-		
-		
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		
 		container = new WebMarkupContainer("container");

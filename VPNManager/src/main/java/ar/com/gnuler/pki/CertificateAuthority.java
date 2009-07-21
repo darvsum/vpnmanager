@@ -37,13 +37,13 @@ import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.bouncycastle.x509.extension.AuthorityKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 
-public class CertificateAuthority implements ICertificateAuthority, Serializable{
+public class CertificateAuthority implements Serializable{
 
 	private static final long serialVersionUID = 1869081843311360477L;
 	private X509Certificate rootCert = null;
 	private KeyPair rootPair = null;
 	private String name;
-	private List<GenericCertificate> certs = new ArrayList<GenericCertificate>();
+//	private List<GenericCertificate> certs = new ArrayList<GenericCertificate>();
 	
 	public CertificateAuthority(X509Certificate rootCert, String name){
 		this.rootCert = rootCert;
@@ -59,22 +59,22 @@ public class CertificateAuthority implements ICertificateAuthority, Serializable
 	public String getName(){
 		return name;
 	}
-
-	
-	/* (non-Javadoc)
-	 * @see ar.com.gnuler.pki.ICertificateAuthority#getCertificates()
-	 */
-	public List<GenericCertificate> getCertificates(){
-		return this.certs;
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see ar.com.gnuler.pki.ICertificateAuthority#add(ar.com.gnuler.pki.GenericCertificate)
-	 */
-	public void add(GenericCertificate cert){
-		this.add(cert);
-	}
+//
+//	
+//	/* (non-Javadoc)
+//	 * @see ar.com.gnuler.pki.ICertificateAuthority#getCertificates()
+//	 */
+//	public List<GenericCertificate> getCertificates(){
+//		return this.certs;
+//	}
+//	
+//	
+//	/* (non-Javadoc)
+//	 * @see ar.com.gnuler.pki.ICertificateAuthority#add(ar.com.gnuler.pki.GenericCertificate)
+//	 */
+//	public void add(GenericCertificate cert){
+//		this.add(cert);
+//	}
 
 	/* (non-Javadoc)
 	 * @see ar.com.gnuler.pki.ICertificateAuthority#exportPEMCert(java.lang.String)
@@ -88,7 +88,7 @@ public class CertificateAuthority implements ICertificateAuthority, Serializable
 	 * @see ar.com.gnuler.pki.ICertificateAuthority#importPEMCertificate(java.lang.String)
 	 */
 	public void importPEMCertificate(String fileName) {
-		X509Certificate cert = Utils.readX509CertificateFromPEMFile(fileName);
+//		X509Certificate cert = Utils.readX509CertificateFromPEMFile(fileName);
 //		GenericCertificate cert2 = new GenericCertificate(cert, "");
 		
 		// TODO Auto-generated method stub

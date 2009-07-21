@@ -20,7 +20,7 @@ public class CertificateAuthorityFactory {
 	
 	
 	//TODO tomar datos de la CA (i.e. CN, mail, etc)
-	public static ICertificateAuthority createSelfSignedCA(String name, String CN, String mail) throws Exception{
+	public static CertificateAuthority createSelfSignedCA(String name, String CN, String mail) throws Exception{
 
 	   // create a root certificate
         KeyPair	pair = Utils.generateRSAKeyPair();

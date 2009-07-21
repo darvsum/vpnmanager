@@ -45,7 +45,7 @@ public class Utils {
 		
 	}
 	
-	public  KeyPair readKeyPairFromPEMFile(File file) throws IOException{
+	public static KeyPair readKeyPairFromPEMFile(File file) throws IOException{
 		
 		KeyPair keyPair = null;
 		PEMReader pemReader = null;

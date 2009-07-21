@@ -1,33 +1,11 @@
 package ar.com.gnuler.view.pki;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Check;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import ar.com.gnuler.net.IPV4Address;
-import ar.com.gnuler.net.InvalidAddressFormatException;
-import ar.com.gnuler.net.Protocol;
-import ar.com.gnuler.net.exceptions.InvalidProtocolException;
-import ar.com.gnuler.net.exceptions.NotHostException;
-import ar.com.gnuler.net.exceptions.NotSubnetException;
-import ar.com.gnuler.pki.CAStore;
-import ar.com.gnuler.pki.CertificateAuthorityFactory;
-import ar.com.gnuler.pki.ICertificateAuthority;
 import ar.com.gnuler.view.ViewTemplate;
-import ar.com.gnuler.view.components.IPV4AddressField;
-import ar.com.gnuler.vpn.openvpn.OpenVPNServerInstance;
-import ar.com.gnuler.vpn.openvpn.OpenVPNServerManager;
 
 public class CreateCAView extends ViewTemplate {
 	
@@ -53,16 +31,16 @@ public class CreateCAView extends ViewTemplate {
 				System.out.println(mail);
 				System.out.println("*********************");
 				
-				try {
-					ICertificateAuthority ca1 = CertificateAuthorityFactory.createSelfSignedCA(name, cn, mail);
-					CAStore.getInstance().addCA(ca1);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				for (String name: CAStore.getInstance().getCaNames())
-					System.out.println(name);
+//				try {
+//					ICertificateAuthority ca1 = CertificateAuthorityFactory.createSelfSignedCA(name, cn, mail);
+//					CAStore.getInstance().addCA(ca1);
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				
+//				for (String name: CAStore.getInstance().getCaNames())
+//					System.out.println(name);
 				
 				//TODO Redirigir a la pagina view de OpenVPNServers
 				setResponsePage(PKIMainView.class);
