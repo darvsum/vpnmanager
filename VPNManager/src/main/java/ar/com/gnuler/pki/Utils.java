@@ -37,6 +37,8 @@ public class Utils {
 		X509Certificate cert = null;
 		PEMReader pemReader = null;
 		
+		
+		
 		pemReader = new PEMReader(new FileReader(file));
 		cert = (X509Certificate)pemReader.readObject();
 

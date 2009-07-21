@@ -32,5 +32,31 @@
 		</p>
 	</div>
 	
+
+	<form wicket:id="importcert">
+		<fieldset>
+			<legend>Upload form</legend>
+			<p>
+				<label for="upload">Certificado</label>
+				<input wicket:id="fileInput" id="upload" type="file"/>
+			</p>
+			<input type="submit" value="Upload!"/>
+		</fieldset>
+	</form>
+
+	<form wicket:id="importcertandkey">
+		<fieldset>
+			<legend>Upload form</legend>
+			<p>
+				<label for="upload">Certificado</label>
+				<input wicket:id="fileInput1" id="upload1" type="file"/>
+				<input wicket:id="fileInput2" id="upload2" type="file"/>
+			</p>
+			<input type="submit" value="Upload!"/>
+		</fieldset>
+	</form>
+
+
+
 </div>
 </wicket:extend>
