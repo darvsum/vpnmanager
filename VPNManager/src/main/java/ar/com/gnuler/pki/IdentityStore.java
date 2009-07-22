@@ -107,6 +107,10 @@ public class IdentityStore {
 	}
 	
 	
+	public X509Certificate getCertificateForAlias(String alias) throws KeyStoreException{
+		return (X509Certificate) store.getCertificate(alias);
+	}
+	
 	public void showContent(){
 		 Enumeration<String> en;
 		try {

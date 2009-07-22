@@ -1,60 +1,63 @@
 <wicket:extend> 
 <div class="post">
-	<h2 class="title">Certificate Authoritys</h2>
+	<h2 class="title">Known Certificates</h2>
 	<p class="byline">.</p>
 	
 
 	<div class="entry">
-		<table>
-		<tbody>
-			<span wicket:id="container">
-			<tr wicket:id="servers">
-				<td><span wicket:id="name">Test ID</span></td>
-<!--
-				<td><span wicket:id="state">Test ID</span></td>
-				<td><a href="#" wicket:id="delete">delete</a></td>
-				<td><a href="#" wicket:id="startstoplink"><span wicket:id="startstoplabel">Test ID</span></a></td>
-				<td><a href="#" wicket:id="viewlog">view log</a></td>
--->
-			</tr>
-			</span>
-		</tbody>
+
+		<table class="servers" cellspacing="0">
+			<thead>
+				<tr>
+					<th>Alias</th>
+					<th>CN</th>
+				</tr>
+			</thead>
+			<tbody>
+				<span wicket:id="container">
+					<tr wicket:id="servers">
+						<td><span wicket:id="alias">Test ID</span></td>
+						<td><span wicket:id="commonName">Test ID</span></td>
+					</tr>
+				</span>
+			</tbody>
 		</table>
+
 	
 	</div>
 	
 
 	<div class="meta">
 		<p class="links">
-			<wicket:link>
-    			<a href = "CreateCAView.html">Create Certificate Authority</a><br/>
-			</wicket:link>
+			<form wicket:id="importcert">
+				<fieldset>
+					<legend>Import X509 Certificate (PEM Format)</legend>
+					<p>
+						<label for="upload">Certificate</label>
+						<input wicket:id="fileInput" id="upload" type="file"/>
+					</p>
+					<input type="submit" value="Import"/>
+				</fieldset>
+			</form>
+
+			<form wicket:id="importcertandkey">
+				<fieldset>
+					<legend>Import X509 Certificate and Key (PEM Format)</legend>
+					<p>
+						<label for="upload">Certificate</label>
+						<input wicket:id="fileInput1" id="upload1" type="file"/>
+						<br/>
+						<label for="upload">Private Key</label>
+						<input wicket:id="fileInput2" id="upload2" type="file"/>
+					</p>
+					<input type="submit" value="Import"/>
+				</fieldset>
+			</form>
 		</p>
 	</div>
 	
 
-	<form wicket:id="importcert">
-		<fieldset>
-			<legend>Upload form</legend>
-			<p>
-				<label for="upload">Certificado</label>
-				<input wicket:id="fileInput" id="upload" type="file"/>
-			</p>
-			<input type="submit" value="Upload!"/>
-		</fieldset>
-	</form>
 
-	<form wicket:id="importcertandkey">
-		<fieldset>
-			<legend>Upload form</legend>
-			<p>
-				<label for="upload">Certificado</label>
-				<input wicket:id="fileInput1" id="upload1" type="file"/>
-				<input wicket:id="fileInput2" id="upload2" type="file"/>
-			</p>
-			<input type="submit" value="Upload!"/>
-		</fieldset>
-	</form>
 
 
 

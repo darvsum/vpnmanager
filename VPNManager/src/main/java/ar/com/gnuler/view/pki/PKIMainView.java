@@ -182,18 +182,16 @@ public class PKIMainView extends ViewTemplate {
 		
 		container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
-		container.add(new CAList("servers", container));
+		container.add(new CertificatesList("servers", container));
 		
 		add(container);
 		
-		  final CertImportForm simpleUploadForm = new CertImportForm("importcert");
-	        add(simpleUploadForm);
+		final CertImportForm simpleUploadForm = new CertImportForm("importcert");
+	    add(simpleUploadForm);
 		
-	        final CertAndKeyImportFormForm form2 = new CertAndKeyImportFormForm("importcertandkey");
-	        add(form2);
-	        
-		
-
+	    final CertAndKeyImportFormForm form2 = new CertAndKeyImportFormForm("importcertandkey");
+	    add(form2);
+	    
 	}
 	
 	  /**

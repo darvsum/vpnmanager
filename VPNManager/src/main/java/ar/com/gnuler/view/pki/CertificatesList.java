@@ -1,10 +1,17 @@
 package ar.com.gnuler.view.pki;
 
 
+import java.security.KeyStoreException;
+import java.security.cert.X509Certificate;
+
+import javax.security.auth.x500.X500Principal;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+
+import ar.com.gnuler.pki.IdentityStore;
 
 /*
  * Example usage:
@@ -19,13 +26,13 @@ import org.apache.wicket.markup.repeater.data.DataView;
  *
  */
 
-public class CAList extends DataView<String> {
+public class CertificatesList extends DataView<String> {
 
 	private static final long serialVersionUID = 1L;
 	Component componentToUpdate;
 		
 	
-	public CAList(String id, Component componentToUpdate) {
+	public CertificatesList(String id, Component componentToUpdate) {
 		super(id, new CANameListModel());
 		setOutputMarkupId(true);
 		this.componentToUpdate = componentToUpdate;
@@ -35,31 +42,23 @@ public class CAList extends DataView<String> {
 
 	@Override
 	protected void populateItem(Item<String> item) {
-		String caName = item.getModelObject();
-//		String state;
+		String alias = item.getModelObject();
 		
-		// Server Name label
-		item.add(new Label("name", caName));
+		item.add(new Label("alias", alias));
 		
-		// Show server status
-//		if (OpenVPNServerManager.getInstance().isRunning(serverName))
-//	    	state = "Running";
-//	    else
-//	    	state = "Stopped";
-//	    item.add(new Label("state", state));
-	    
-	    // Delete button
-//	    item.add(new DeleteOpenVPNServerButton("delete", serverName, componentToUpdate));
-	    
-	    
-	    // Start/Stop button
-//	    item.add(new StartStopOpenVPNServerButton("startstop", serverName));
-	    
-	    // Server Detail button
-//	    item.add(new BookmarkablePageLink<String>(
-//	    		"viewlog",
-//	    		OpenVPNServerAdminView.class, 
-//	    		new PageParameters("s=" + serverName)));
+		IdentityStore is = IdentityStore.getInstance();
+		
+		try {
+			X509Certificate cert = is.getCertificateForAlias(alias);
+
+			item.add(new Label("commonName", cert.getSubjectX500Principal().toString()));	
+			
+			
+		} catch (KeyStoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	
 		
 	}
